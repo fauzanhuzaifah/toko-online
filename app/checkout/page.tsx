@@ -32,10 +32,11 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-8"> {/* Padding vertikal diperbesar */}
+    // Ubah py-12 menjadi pt-24 pb-12 untuk jarak atas yang lebih aman
+    <main className="min-h-screen bg-gray-50 pt-24 pb-12 px-4 sm:px-8">
       <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-lg shadow-md border border-gray-200">
         
-        {/* Header dengan Tombol Kembali */}
+        {/* Header */}
         <div className="mb-6 flex justify-between items-center">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Checkout</h1>
           <Link href="/" className="text-sm text-blue-600 hover:underline">
