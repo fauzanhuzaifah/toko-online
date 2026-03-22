@@ -3,9 +3,9 @@
 import { useCart } from "../context/CartContext";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
-// Definisikan tipe Product (sesuai database)
+// Definisikan tipe Product
 interface Product {
   id: number;
   name: string;
@@ -14,16 +14,41 @@ interface Product {
   image: string;
 }
 
-export default function Home() {
-  const { addItem, items, total, clearCart } = useCart();
+// KOMPONEN PESAN SUKSES (Dipisah agar bisa pakai Suspense)
+function SuccessMessage() {
   const searchParams = useSearchParams();
+  const { clearCart } = useCart();
   const [showSuccess, setShowSuccess] = useState(false);
-  
-  // State baru untuk menyimpan produk dari database
+
+  useEffect(() => {
+    if (searchParams.get("success") === "true") {
+      setShowSuccess(true);
+      clearCart();
+      const timer = setTimeout(() => setShowSuccess(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams, clearCart]);
+
+  if (!showSuccess) return null;
+
+  return (
+    <div className="max-w-7xl mx-auto mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow-sm flex justify-between items-center">
+      <div>
+        <strong className="font-bold">Transaksi Berhasil!</strong>
+        <span className="block sm:inline ml-2">Terima kasih telah berbelanja di toko kami.</span>
+      </div>
+      <button onClick={() => setShowSuccess(false)} className="text-green-700 hover:text-green-900 text-2xl font-bold leading-none">&times;</button>
+    </div>
+  );
+}
+
+// KOMPONEN UTAMA
+export default function Home() {
+  const { addItem, items, total } = useCart();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Effect untuk mengambil data produk dari API
+  // Effect untuk mengambil data produk
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -37,30 +62,14 @@ export default function Home() {
       }
     }
     fetchProducts();
-  }, []); // Array kosong artinya jalan sekali saat load
-
-  // Effect untuk notifikasi sukses (dari tahap sebelumnya)
-  useEffect(() => {
-    if (searchParams.get("success") === "true") {
-      setShowSuccess(true);
-      clearCart();
-      const timer = setTimeout(() => setShowSuccess(false), 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [searchParams, clearCart]);
+  }, []);
 
   return (
     <main className="min-h-screen bg-gray-50 p-8">
-      {/* Notifikasi Transaksi Berhasil */}
-      {showSuccess && (
-        <div className="max-w-7xl mx-auto mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow-sm flex justify-between items-center">
-          <div>
-            <strong className="font-bold">Transaksi Berhasil!</strong>
-            <span className="block sm:inline ml-2">Terima kasih telah berbelanja di toko kami.</span>
-          </div>
-          <button onClick={() => setShowSuccess(false)} className="text-green-700 hover:text-green-900 text-2xl font-bold leading-none">&times;</button>
-        </div>
-      )}
+      {/* Bungkus SuccessMessage dengan Suspense */}
+      <Suspense fallback={null}>
+        <SuccessMessage />
+      </Suspense>
 
       {/* Header */}
       <header className="mb-8 flex flex-col sm:flex-row justify-between items-center max-w-7xl mx-auto gap-4">
@@ -81,7 +90,7 @@ export default function Home() {
         </Link>
       </header>
 
-      {/* Tampilan Loading atau Grid Produk */}
+      {/* Loading atau Grid Produk */}
       {loading ? (
         <p className="text-center text-gray-500 mt-10">Memuat produk dari database...</p>
       ) : (
