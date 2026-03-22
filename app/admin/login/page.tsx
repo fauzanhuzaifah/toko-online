@@ -1,16 +1,20 @@
 // app/admin/login/page.tsx
 import { login } from "../../actions";
 
-export default function LoginPage(props: {
+// Jadikan fungsi ini async
+export default async function LoginPage(props: {
   searchParams: Promise<{ error?: string }>;
 }) {
+  // Await searchParams sebelum digunakan
+  const searchParams = await props.searchParams;
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
         <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">Login Admin</h1>
         
         {/* Pesan error jika password salah */}
-        {props.searchParams && props.searchParams.then(params => params.error) && (
+        {searchParams.error && (
           <p className="bg-red-100 text-red-600 p-2 rounded text-center text-sm mb-4">
             Password salah!
           </p>
