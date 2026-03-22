@@ -22,11 +22,11 @@ export default async function LoginPage(props: {
 
         <form action={login}>
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-gray-900">Password</label>
+            <label className="block text-sm font-medium mb-1 text-black">Password</label>
             <input
               type="password"
               name="password"
-              className="w-full px-3 py-2 border rounded-md text-gray-900 placeholder-text-black"
+              className="w-full px-3 py-2 border rounded-md text-black placeholder-text-black"
               placeholder="Masukkan password admin"
               required
             />
