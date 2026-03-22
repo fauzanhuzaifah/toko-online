@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { logout } from "../actions"; // Import fungsi logout
+import { logout } from "../actions";
 
 interface Product {
   id: number;
@@ -13,16 +13,12 @@ interface Product {
 }
 
 export default function AdminPage() {
-  // State untuk Form
   const [formData, setFormData] = useState({ name: "", price: "", description: "", image: "" });
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
-  // State untuk Daftar Produk
   const [products, setProducts] = useState<Product[]>([]);
 
-  // Ambil data produk saat halaman dimuat
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -37,7 +33,6 @@ export default function AdminPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Fungsi Simpan (Tambah atau Edit)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -46,14 +41,12 @@ export default function AdminPage() {
     try {
       let res;
       if (editingId) {
-        // Mode Edit
         res = await fetch(`/api/products/${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
       } else {
-        // Mode Tambah
         res = await fetch("/api/products", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -107,23 +100,16 @@ export default function AdminPage() {
         {/* Bagian Form */}
         <div className="bg-white p-8 rounded-lg shadow-md">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-2xl font-bold text-black">
               {editingId ? "Edit Produk" : "Tambah Produk Baru"}
             </h1>
             
-            {/* Area Tombol Aksi Header */}
             <div className="flex items-center gap-4">
-              {/* Tombol Logout */}
               <form action={logout}>
-                <button 
-                  type="submit" 
-                  className="text-red-600 hover:text-red-800 text-sm font-medium hover:underline"
-                >
+                <button type="submit" className="text-red-600 hover:text-red-800 text-sm font-medium hover:underline">
                   Logout
                 </button>
               </form>
-              
-              {/* Tombol Lihat Toko */}
               <Link href="/" className="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline">
                 Lihat Toko
               </Link>
@@ -132,49 +118,49 @@ export default function AdminPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Nama Produk</label>
+              <label className="block text-sm font-medium text-black">Nama Produk</label>
               <input 
                 type="text" 
                 name="name" 
                 value={formData.name} 
                 onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black" 
                 required 
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Harga (Rp)</label>
+              <label className="block text-sm font-medium text-black">Harga (Rp)</label>
               <input 
                 type="number" 
                 name="price" 
                 value={formData.price} 
                 onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black" 
                 required 
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
+              <label className="block text-sm font-medium text-black">Deskripsi</label>
               <textarea 
                 name="description" 
                 value={formData.description} 
                 onChange={handleChange} 
                 rows={3} 
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black" 
                 required 
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">URL Gambar</label>
+              <label className="block text-sm font-medium text-black">URL Gambar</label>
               <input 
                 type="text" 
                 name="image" 
                 value={formData.image} 
                 onChange={handleChange} 
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-black" 
                 required 
               />
             </div>
@@ -197,7 +183,7 @@ export default function AdminPage() {
                 <button 
                   type="button" 
                   onClick={() => { setEditingId(null); setFormData({ name: "", price: "", description: "", image: "" }); }} 
-                  className="py-2 px-4 border rounded-md hover:bg-gray-100"
+                  className="py-2 px-4 border rounded-md hover:bg-gray-100 text-black"
                 >
                   Batal
                 </button>
@@ -208,7 +194,7 @@ export default function AdminPage() {
 
         {/* Bagian Daftar Produk */}
         <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-xl font-bold mb-4">Daftar Produk</h2>
+          <h2 className="text-xl font-bold mb-4 text-black">Daftar Produk</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
