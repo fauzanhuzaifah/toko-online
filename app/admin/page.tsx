@@ -221,7 +221,7 @@ export default function AdminPage() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {products.map((product) => (
                   <tr key={product.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black">{product.name}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp {product.price.toLocaleString('id-ID')}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                       <button onClick={() => handleEdit(product)} className="text-indigo-600 hover:text-indigo-900 border px-2 py-1 rounded hover:bg-gray-50">Edit</button>

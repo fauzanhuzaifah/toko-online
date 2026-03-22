@@ -11,7 +11,7 @@ export default async function LoginPage(props: {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-6 text-center text-gray-900">Login Admin</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center text-black">Login Admin</h1>
         
         {/* Pesan error jika password salah */}
         {searchParams.error && (
@@ -26,7 +26,7 @@ export default async function LoginPage(props: {
             <input
               type="password"
               name="password"
-              className="w-full px-3 py-2 border rounded-md text-gray-900 placeholder-gray-400"
+              className="w-full px-3 py-2 border rounded-md text-gray-900 placeholder-text-black"
               placeholder="Masukkan password admin"
               required
             />
