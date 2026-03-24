@@ -3,6 +3,10 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
+import { prisma } from "../lib/prisma"; // Tambahkan ini jika belum ada
+
+
+
 // --- FUNGSI TRANSAKSI (Yang hilang tadi) ---
 export async function processCheckout() {
   // Di aplikasi nyata, di sini Anda akan:
@@ -42,4 +46,26 @@ export async function login(formData: FormData) {
 export async function logout() {
   (await cookies()).delete("admin_session");
   redirect("/admin/login");
+}
+
+
+
+// Fungsi lama processCheckout bisa dihapus atau dibiarkan, kita buat baru:
+export async function createOrder(formData: FormData) {
+  const name = formData.get("name") as string;
+  const phone = formData.get("phone") as string;
+  const total = formData.get("total") as string;
+
+  // Simpan ke database
+  const order = await prisma.order.create({
+    data: {
+      customerName: name,
+      customerPhone: phone,
+      total: parseInt(total),
+      status: "PENDING",
+    },
+  });
+
+  // Arahkan ke halaman instruksi pembayaran dengan membawa ID pesanan
+  redirect(`/payment-instruction?orderId=${order.id}`);
 }

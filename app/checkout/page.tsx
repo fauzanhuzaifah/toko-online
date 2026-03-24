@@ -2,83 +2,73 @@
 
 import { useCart } from "../../context/CartContext";
 import Link from "next/link";
-import { useState } from "react";
-import { processCheckout } from "../actions";
+import { createOrder } from "../actions";
 
 export default function CheckoutPage() {
-  const { items, total, clearCart } = useCart();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handlePayment = async () => {
-    setIsLoading(true);
-    try {
-      await processCheckout();
-      clearCart();
-    } catch (error) {
-      console.error("Payment failed", error);
-      setIsLoading(false);
-    }
-  };
+  const { items, total } = useCart();
 
   if (items.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-8">
-        <h1 className="text-2xl font-bold mb-4 text-black">Keranjang Anda Kosong</h1>
-        <Link href="/" className="text-blue-600 hover:underline">
-          Kembali Belanja
-        </Link>
+        <h1 className="text-2xl font-bold mb-4 text-gray-800">Keranjang Anda Kosong</h1>
+        <Link href="/" className="text-blue-600 hover:underline">Kembali Belanja</Link>
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-24 pb-12 px-4 sm:px-8">
-      <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-lg shadow-md border border-gray-200">
+    <main className="min-h-screen bg-gray-50 pt-24 pb-12 px-4">
+      <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">Checkout</h1>
         
-        {/* Header */}
-        <div className="mb-6 flex justify-between items-center">
-          <h1 className="text-2xl sm:text-3xl font-bold text-black">Checkout</h1>
-          <Link href="/" className="text-sm text-blue-600 hover:underline">
-            &larr; Kembali Belanja
-          </Link>
-        </div>
-
-        {/* Daftar Item */}
-        <div className="space-y-4 mb-6">
+        {/* Daftar Produk */}
+        <div className="mb-6 border-b pb-4">
           {items.map((item) => (
-            <div key={item.id} className="flex justify-between items-center border-b pb-3">
-              <div>
-                <p className="font-semibold text-black">{item.name}</p>
-                <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
-              </div>
-              <p className="font-bold text-black">
-                Rp {(item.price * item.quantity).toLocaleString('id-ID')}
-              </p>
+            <div key={item.id} className="flex justify-between text-sm mb-2">
+              <span>{item.name} x {item.quantity}</span>
+              <span>Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
             </div>
           ))}
+          <div className="flex justify-between font-bold text-lg mt-4 pt-4 border-t">
+            <span>Total</span>
+            <span>Rp {total.toLocaleString('id-ID')}</span>
+          </div>
         </div>
 
-        {/* Total & Tombol Bayar */}
-        <div className="border-t pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 bg-gray-50 -mx-6 sm:-mx-8 px-6 sm:px-8 -mb-6 sm:-mb-8 py-6 rounded-b-lg">
-          <div className="text-center sm:text-left">
-            <p className="text-gray-600 text-sm">Total Pembayaran:</p>
-            <p className="text-3xl font-bold text-green-600">
-              Rp {total.toLocaleString('id-ID')}
-            </p>
+        {/* Form Data Pembeli */}
+        <form action={createOrder} className="space-y-4">
+          {/* Input Tersembunyi untuk Total */}
+          <input type="hidden" name="total" value={total.toString()} />
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+            <input 
+              type="text" 
+              name="name" 
+              required 
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Masukkan nama Anda"
+            />
           </div>
-          <button
-            onClick={handlePayment}
-            disabled={isLoading}
-            className={`w-full sm:w-auto px-8 py-3 rounded text-white font-bold transition shadow ${
-              isLoading 
-                ? 'bg-gray-400 cursor-not-allowed' 
-                : 'bg-green-600 hover:bg-green-700 active:scale-95'
-            }`}
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">No. WhatsApp (Aktif)</label>
+            <input 
+              type="tel" 
+              name="phone" 
+              required 
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Contoh: 08123456789"
+            />
+          </div>
+
+          <button 
+            type="submit"
+            className="w-full bg-green-600 text-white py-3 rounded-md font-bold hover:bg-green-700 transition"
           >
-            {isLoading ? "Memproses..." : "Bayar Sekarang"}
+            Lanjutkan ke Pembayaran
           </button>
-        </div>
-        
+        </form>
       </div>
     </main>
   );

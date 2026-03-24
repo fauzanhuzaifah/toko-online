@@ -14,3 +14,22 @@ model Product {
   description String
   image       String
 }
+
+// Tabel untuk menyimpan pesanan
+model Order {
+  id            String   @id @default(cuid())
+  customerName  String
+  customerPhone String
+  total         Int
+  status        String   @default("PENDING") // Status: PENDING atau PAID
+  createdAt     DateTime @default(now())
+}
+
+// Tabel untuk menyimpan rekening bank toko
+model Bank {
+  id            Int    @id @default(autoincrement())
+  bankName      String // Contoh: BCA, Mandiri
+  accountNumber String
+  accountName   String
+}
+
