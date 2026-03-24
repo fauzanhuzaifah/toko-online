@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
+import { useCart } from "../../context/CartContext"; // <--- 1. TAMBAHKAN IMPORT INI
 
 function PaymentContent() {
   const searchParams = useSearchParams();
@@ -13,6 +14,7 @@ function PaymentContent() {
   const [selectedBank, setSelectedBank] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isConfirmed, setIsConfirmed] = useState(false); // State baru
+  const { clearCart } = useCart(); // <--- 2. TAMBAHKAN HOOK INI
 
   useEffect(() => {
     if (orderId) {
@@ -32,6 +34,7 @@ function PaymentContent() {
     // 1. Update status order menjadi 'PROCESSING' (opsional, via API)
     // Untuk simpelnya, kita langsung tampilkan pesan sukses dulu.
     
+    clearCart(); 
     setIsConfirmed(true); // Ubah tampilan ke mode "Terima Kasih"
 
     // 2. Buka WhatsApp

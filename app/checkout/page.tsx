@@ -22,14 +22,15 @@ export default function CheckoutPage() {
         <h1 className="text-2xl font-bold mb-6 text-gray-800">Checkout</h1>
         
         {/* Daftar Produk */}
-        <div className="mb-6 border-b pb-4">
+         <div className="mb-6 border-b pb-4">
           {items.map((item) => (
             <div key={item.id} className="flex justify-between text-sm mb-2">
-              <span>{item.name} x {item.quantity}</span>
-              <span>Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
+              {/* Ubah class di sini agar hitam pekat */}
+              <span className="text-gray-900 font-medium">{item.name} x {item.quantity}</span>
+              <span className="text-gray-900 font-semibold">Rp {(item.price * item.quantity).toLocaleString('id-ID')}</span>
             </div>
           ))}
-          <div className="flex justify-between font-bold text-lg mt-4 pt-4 border-t">
+          <div className="flex justify-between font-bold text-lg mt-4 pt-4 border-t text-gray-900">
             <span>Total</span>
             <span>Rp {total.toLocaleString('id-ID')}</span>
           </div>
@@ -46,7 +47,7 @@ export default function CheckoutPage() {
               type="text" 
               name="name" 
               required 
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-700"
               placeholder="Masukkan nama Anda"
             />
           </div>
@@ -57,7 +58,7 @@ export default function CheckoutPage() {
               type="tel" 
               name="phone" 
               required 
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder:text-gray-700"
               placeholder="Contoh: 08123456789"
             />
           </div>
