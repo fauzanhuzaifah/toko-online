@@ -35,7 +35,7 @@ function PaymentContent() {
     setIsConfirmed(true); // Ubah tampilan ke mode "Terima Kasih"
 
     // 2. Buka WhatsApp
-    const adminNumber = "6281234567890"; // GANTI DENGAN NOMOR WA PENJUAL
+    const adminNumber = "6281321225817"; // GANTI DENGAN NOMOR WA PENJUAL
     const message = `Halo Admin, saya ingin konfirmasi pembayaran.
     
 *Detail Pesanan:*
